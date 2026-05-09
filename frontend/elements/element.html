@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Element Lesson – Subatomic Language</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: #1f2937;
+        background: #f7f8fb;
+      }
+
+      /* ── Header ── */
+      header {
+        position: sticky; top: 0;
+        background: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e2e8f0;
+        z-index: 10;
+      }
+      .nav-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .back-link {
+        text-decoration: none;
+        color: #2563eb;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .back-link:hover { color: #1d4ed8; }
+      .brand { font-weight: 700; font-size: 1.2rem; color: #111827; }
+      .user-pill {
+        display: flex; align-items: center; gap: 8px;
+        background: #eff6ff; border: 1px solid #bfdbfe;
+        border-radius: 999px; padding: 5px 12px;
+        font-size: 0.85rem; color: #1e40af; font-weight: 600;
+      }
+      .xp-badge {
+        background: #dbeafe; border-radius: 999px;
+        padding: 2px 8px; font-size: 0.76rem;
+      }
+      .streak-badge {
+        background: #fef3c7; border-radius: 999px;
+        padding: 2px 8px; font-size: 0.76rem; color: #92400e;
+      }
+      .btn { padding: 8px 18px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; }
+      .btn-primary { background: #2563eb; color: #fff; }
+      .btn-primary:hover { background: #1d4ed8; }
+      .btn-sm-logout { background: #fee2e2; color: #b91c1c; padding: 5px 11px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
+      .btn-sm-logout:hover { background: #fecaca; }
+
+      /* ── Page layout ── */
+      .page { max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; }
+      .loading { text-align: center; padding: 80px 0; color: #6b7280; font-size: 1.1rem; }
+      .error-msg { text-align: center; padding: 60px 0; color: #b91c1c; }
+
+      /* ── Hero ── */
+      .element-hero {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 36px;
+        align-items: center;
+        padding: 48px 0 36px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .bohr-canvas {
+        position: relative;
+        width: 200px; height: 200px;
+      }
+      .bohr-nucleus {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.65rem; font-weight: 700; color: #fff;
+        z-index: 2;
+      }
+      .bohr-orbit {
+        position: absolute;
+        border: 1px dashed rgba(15,23,42,0.2);
+        border-radius: 50%;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .bohr-electron {
+        position: absolute;
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+      }
+
+      .element-info h1 { margin: 0 0 6px; font-size: 2.6rem; }
+      .element-symbol-big {
+        display: inline-block;
+        font-size: 1.3rem;
+        font-weight: 700;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 8px;
+        padding: 4px 14px;
+        margin-bottom: 12px;
+      }
+      .element-meta {
+        display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+      }
+      .meta-chip {
+        background: #f3f4f6; border-radius: 999px;
+        padding: 4px 12px; font-size: 0.82rem; color: #374151;
+      }
+      .fun-fact {
+        margin-top: 14px;
+        background: #fffbeb;
+        border-left: 4px solid #f59e0b;
+        border-radius: 0 8px 8px 0;
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        color: #78350f;
+        line-height: 1.6;
+      }
+
+      /* ── Progress bar ── */
+      .lesson-progress-bar {
+        margin: 28px 0 0;
+        padding: 16px 20px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .progress-status { font-size: 0.9rem; font-weight: 600; }
+      .status-not_started { color: #6b7280; }
+      .status-in_progress { color: #d97706; }
+      .status-completed   { color: #059669; }
+      .progress-actions { display: flex; gap: 10px; }
+      .btn-start    { background: #2563eb; color: #fff; }
+      .btn-start:hover { background: #1d4ed8; }
+      .btn-complete { background: #059669; color: #fff; }
+      .btn-complete:hover { background: #047857; }
+      .xp-reward-chip {
+        background: #ecfdf5; color: #065f46;
+        border-radius: 999px; padding: 4px 12px;
+        font-size: 0.82rem; font-weight: 600;
+      }
+
+      /* ── Tabs ── */
+      .tabs { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin: 36px 0 28px; }
+      .tab-btn {
+        padding: 12px 22px;
+        background: none; border: none; cursor: pointer;
+        font-size: 0.95rem; font-weight: 600;
+        color: #6b7280;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: color 0.15s, border-color 0.15s;
+      }
+      .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+      .tab-panel { display: none; }
+      .tab-panel.active { display: block; }
+
+      /* ── Overview ── */
+      .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+      .detail-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px 18px;
+      }
+      .detail-card .label { font-size: 0.78rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+      .detail-card .value { font-size: 1.05rem; font-weight: 600; color: #111827; }
+
+      /* ── Vocabulary ── */
+      .vocab-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+      .vocab-card {
+        background: #fff;
+        border: 1px solid #dbeafe;
+        border-radius: 14px;
+        padding: 20px;
+      }
+      .vocab-word { font-size: 1.15rem; font-weight: 700; color: #1e40af; margin-bottom: 6px; }
+      .vocab-def  { font-size: 0.9rem; color: #374151; line-height: 1.6; margin-bottom: 8px; }
+      .vocab-ex   { font-size: 0.85rem; color: #6b7280; font-style: italic; }
+      .no-data    { color: #9ca3af; font-size: 0.95rem; padding: 20px 0; }
+
+      /* ── Quiz ── */
+      .auth-required {
+        background: #fffbeb; border: 1px solid #fde68a;
+        border-radius: 12px; padding: 18px 22px;
+        color: #92400e; font-size: 0.92rem; margin-bottom: 24px;
+      }
+      .quiz-question {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 18px;
+      }
+      .question-text { font-weight: 600; font-size: 1rem; margin-bottom: 14px; }
+      .question-num  { font-size: 0.8rem; color: #9ca3af; margin-bottom: 6px; }
+      .options-list  { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+      .option-label  {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        font-size: 0.92rem;
+      }
+      .option-label:hover { border-color: #93c5fd; background: #eff6ff; }
+      .option-label input[type="radio"] { accent-color: #2563eb; }
+      .fill-blank-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.92rem;
+        outline: none;
+      }
+      .fill-blank-input:focus { border-color: #2563eb; }
+      .quiz-submit-row { margin-top: 24px; display: flex; align-items: center; gap: 14px; }
+      .quiz-result-banner {
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        margin-top: 24px;
+        display: none;
+      }
+      .quiz-result-banner.pass { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+      .quiz-result-banner.fail { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+      .answer-feedback {
+        margin-top: 10px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+      .answer-feedback.correct { background: #d1fae5; color: #065f46; }
+      .answer-feedback.wrong   { background: #fee2e2; color: #991b1b; }
+
+      /* ── Earth Examples ── */
+      .examples-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .example-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+      }
+      .example-name { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: #111827; }
+      .example-loc  { font-size: 0.8rem; color: #9ca3af; margin-bottom: 8px; }
+      .example-desc { font-size: 0.9rem; color: #374151; line-height: 1.6; }
+
+      @media (max-width: 640px) {
+        .element-hero { grid-template-columns: 1fr; }
+        .bohr-canvas  { margin: 0 auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> All Elements</a>
+        <div class="brand"><i class="fa-solid fa-atom"></i> Subatomic Language</div>
+        <div id="auth-area"></div>
+      </div>
+    </header>
+
+    <div class="page">
+      <div id="content"><div class="loading">Loading element data…</div></div>
+    </div>
+
+    <script>
+      const API = 'http://localhost:3000';
+
+      // ── Helpers ──────────────────────────────────────────────────
+      function getToken() { return localStorage.getItem('sl_token'); }
+      function getUser()  { try { return JSON.parse(localStorage.getItem('sl_user') || 'null'); } catch { return null; } }
+      function authHeaders() {
+        const t = getToken();
+        return t ? { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' }
+                 : { 'Content-Type': 'application/json' };
+      }
+      function escHtml(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      // ── Auth area ─────────────────────────────────────────────────
+      function renderAuthArea() {
+        const area = document.getElementById('auth-area');
+        const user = getUser();
+        if (user) {
+          area.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="user-pill">
+                ${escHtml(user.username)}
+                <span class="xp-badge">${user.xp} XP</span>
+                ${user.streak > 0 ? `<span class="streak-badge">${user.streak} streak</span>` : ''}
+              </div>
+              <button class="btn-sm-logout" id="logout-btn">Logout</button>
+            </div>`;
+          document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('sl_token');
+            localStorage.removeItem('sl_user');
+            renderAuthArea();
+            renderProgressBar(currentLesson);
+          });
+        } else {
+          area.innerHTML = `<a href="../index.html" class="btn btn-primary" style="text-decoration:none;font-size:0.88rem"><i class="fa-solid fa-right-to-bracket"></i> Login</a>`;
+        }
+      }
+
+      // ── Tab switching ─────────────────────────────────────────────
+      function initTabs() {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const tab = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+          });
+        });
+      }
+
+      // ── Bohr diagram renderer ─────────────────────────────────────
+      function buildBohrDiagram(shells, period) {
+        const colors = {
+          1: { nucleus: ['#ef4444','#991b1b'], electron: '#ef4444', glow: 'rgba(239,68,68,0.8)' },
+          2: { nucleus: ['#3b82f6','#1e40af'], electron: '#3b82f6', glow: 'rgba(59,130,246,0.8)' },
+          3: { nucleus: ['#10b981','#059669'], electron: '#10b981', glow: 'rgba(16,185,129,0.8)' },
+        };
+        const c = colors[period] || colors[2];
+        const size = 200;
+        const center = size / 2;
+        const maxShells = shells.length;
+        const gap = (center - 20) / (maxShells + 0.5);
+
+        let html = `<div class="bohr-canvas">`;
+
+        // Orbits
+        for (let i = 0; i < maxShells; i++) {
+          const r = gap * (i + 1);
+          const d = r * 2;
+          html += `<div class="bohr-orbit" style="width:${d}px;height:${d}px;margin-left:${-r}px;margin-top:${-r}px;"></div>`;
+        }
+
+        // Nucleus
+        html += `<div class="bohr-nucleus" style="background:radial-gradient(circle at 30% 30%,${c.nucleus[0]},${c.nucleus[1]});box-shadow:0 0 18px ${c.glow.replace('0.8','0.4')}"></div>`;
+
+        // Electrons per shell
+        for (let si = 0; si < shells.length; si++) {
+          const count = shells[si];
+          const r = gap * (si + 1);
+          for (let ei = 0; ei < count; ei++) {
+            const angle = (2 * Math.PI * ei) / count - Math.PI / 2;
+            const x = center + r * Math.cos(angle);
+            const y = center + r * Math.sin(angle);
+            html += `<div class="bohr-electron" style="left:${x}px;top:${y}px;background:${c.electron};box-shadow:0 0 4px ${c.glow}"></div>`;
+          }
+        }
+
+        html += `</div>`;
+        return html;
+      }
+
+      // ── Progress bar ──────────────────────────────────────────────
+      let currentLesson = null;
+      let userProgress  = null;
+
+      async function fetchProgress(symbol) {
+        const token = getToken();
+        if (!token) return null;
+        try {
+          const res = await fetch(`${API}/api/progress`, { headers: authHeaders() });
+          if (!res.ok) return null;
+          const data = await res.json();
+          const entry = (data.data.lessons || []).find(p => p.elementSymbol === symbol.toUpperCase());
+          return entry || null;
+        } catch { return null; }
+      }
+
+      function renderProgressBar(lesson) {
+        const bar = document.getElementById('progress-bar');
+        if (!bar || !lesson) return;
+        const user = getUser();
+        if (!user) {
+          bar.innerHTML = `<span style="color:#6b7280;font-size:0.9rem">Login to track your progress</span>`;
+          return;
+        }
+        const status = userProgress ? userProgress.status : 'not_started';
+        const labels = { not_started: 'Not started', in_progress: 'In progress', completed: 'Completed' };
+        let actionsHtml = '';
+        if (status === 'not_started') {
+          actionsHtml = `<button class="btn btn-start" id="btn-start"><i class="fa-solid fa-play"></i> Start Lesson</button>`;
+        } else if (status === 'in_progress') {
+          actionsHtml = `<button class="btn btn-complete" id="btn-complete"><i class="fa-solid fa-check"></i> Mark Complete</button>`;
+        } else {
+          actionsHtml = `<span style="color:#059669;font-size:0.9rem"><i class="fa-solid fa-circle-check"></i> Lesson complete</span>`;
+        }
+        bar.innerHTML = `
+          <div>
+            <div class="progress-status status-${status}">${labels[status]}</div>
+          </div>
+          <div class="progress-actions">
+            ${actionsHtml}
+            <span class="xp-reward-chip">+${lesson.xpReward || 0} XP</span>
+          </div>`;
+
+        const startBtn = document.getElementById('btn-start');
+        if (startBtn) startBtn.addEventListener('click', () => startLesson(lesson.elementSymbol));
+        const completeBtn = document.getElementById('btn-complete');
+        if (completeBtn) completeBtn.addEventListener('click', () => completeLesson(lesson.elementSymbol));
+      }
+
+      async function startLesson(symbol) {
+        try {
+          const res = await fetch(`${API}/api/progress/${symbol}/start`, { method: 'POST', headers: authHeaders() });
+          if (!res.ok) throw new Error();
+          userProgress = (await res.json()).data;
+          renderProgressBar(currentLesson);
+        } catch { /* ignore */ }
+      }
+
+      async function completeLesson(symbol) {
+        try {
+          const res = await fetch(`${API}/api/progress/${symbol}/complete`, { method: 'POST', headers: authHeaders() });
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          userProgress = data.data;
+          // Update stored user XP
+          const user = getUser();
+          if (user && data.xpEarned) {
+            user.xp += data.xpEarned;
+            user.level = data.newLevel || user.level;
+            user.streak = data.newStreak || user.streak;
+            localStorage.setItem('sl_user', JSON.stringify(user));
+            renderAuthArea();
+          }
+          renderProgressBar(currentLesson);
+        } catch { /* ignore */ }
+      }
+
+      // ── Quiz ──────────────────────────────────────────────────────
+      let quizQuestions = [];
+
+      function renderQuizTab(quizData) {
+        const panel = document.getElementById('tab-quiz');
+        if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+          panel.innerHTML = `<p class="no-data">No quiz available for this element yet.</p>`;
+          return;
+        }
+        quizQuestions = quizData.questions;
+        const user = getUser();
+        let authWarning = '';
+        if (!user) {
+          authWarning = `<div class="auth-required"><i class="fa-solid fa-lock"></i> Login to submit your answers and earn XP.</div>`;
+        }
+        let questionsHtml = quizQuestions.map((q, idx) => {
+          let inputHtml = '';
+          if (q.type === 'multiple-choice' || q.type === 'image-match') {
+            const opts = (q.options || []).map(opt => `
+              <li><label class="option-label">
+                <input type="radio" name="q_${q._id}" value="${escHtml(opt)}" />
+                ${escHtml(opt)}
+              </label></li>`).join('');
+            inputHtml = `<ul class="options-list">${opts}</ul>`;
+          } else {
+            inputHtml = `<input class="fill-blank-input" type="text" id="freetext_${q._id}" placeholder="Your answer…" />`;
+          }
+          return `
+            <div class="quiz-question" id="qq_${q._id}">
+              <div class="question-num">Question ${idx + 1} &middot; ${q.points} pt${q.points !== 1 ? 's' : ''}</div>
+              <div class="question-text">${escHtml(q.question)}</div>
+              ${inputHtml}
+              <div class="answer-feedback" id="fb_${q._id}" style="display:none"></div>
+            </div>`;
+        }).join('');
+
+        panel.innerHTML = `
+          ${authWarning}
+          ${questionsHtml}
+          <div class="quiz-submit-row">
+            <button class="btn btn-primary" id="quiz-submit-btn"${user ? '' : ' disabled style="opacity:0.5;cursor:not-allowed"'}><i class="fa-solid fa-paper-plane"></i> Submit Answers</button>
+            <span id="quiz-points-info" style="color:#6b7280;font-size:0.88rem">XP reward: ${quizData.xpReward || 0}</span>
+          </div>
+          <div class="quiz-result-banner" id="quiz-result-banner"></div>`;
+
+        if (user) {
+          document.getElementById('quiz-submit-btn').addEventListener('click', submitQuiz);
+        }
+      }
+
+      async function submitQuiz() {
+        const symbol = new URLSearchParams(location.search).get('symbol') || '';
+        const answers = quizQuestions.map(q => {
+          let answer = '';
+          if (q.type === 'multiple-choice' || q.type === 'image-match') {
+            const sel = document.querySelector(`input[name="q_${q._id}"]:checked`);
+            answer = sel ? sel.value : '';
+          } else {
+            const inp = document.getElementById(`freetext_${q._id}`);
+            answer = inp ? inp.value.trim() : '';
+          }
+          return { questionId: q._id, answer };
+        });
+
+        const btn = document.getElementById('quiz-submit-btn');
+        btn.disabled = true;
+        btn.textContent = 'Grading…';
+
+        try {
+          const res = await fetch(`${API}/api/interactive/${symbol}/quiz/submit`, {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ answers }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Submission failed');
+
+          const result = data.data;
+          // Show per-question feedback
+          result.answers.forEach(a => {
+            const fb = document.getElementById(`fb_${a.questionId}`);
+            if (!fb) return;
+            fb.style.display = 'block';
+            if (a.correct) {
+              fb.className = 'answer-feedback correct';
+              fb.textContent = 'Correct! ' + (a.explanation || '');
+            } else {
+              fb.className = 'answer-feedback wrong';
+              fb.textContent = `Incorrect. Correct answer: "${a.correctAnswer}". ${a.explanation || ''}`;
+            }
+          });
+
+          // Banner
+          const banner = document.getElementById('quiz-result-banner');
+          banner.style.display = 'block';
+          if (result.passed) {
+            banner.className = 'quiz-result-banner pass';
+            banner.textContent = `Passed! Score: ${result.score}/${result.totalPoints} (${result.percentage}%)`;
+          } else {
+            banner.className = 'quiz-result-banner fail';
+            banner.textContent = `Score: ${result.score}/${result.totalPoints} (${result.percentage}%) – Need 70% to pass. Try again!`;
+          }
+          btn.textContent = 'Submitted';
+        } catch (e) {
+          btn.disabled = false;
+          btn.textContent = 'Submit Answers';
+          alert('Error: ' + e.message);
+        }
+      }
+
+      // ── Main loader ───────────────────────────────────────────────
+      async function load() {
+        const symbol = new URLSearchParams(location.search).get('symbol');
+        if (!symbol) {
+          document.getElementById('content').innerHTML = `<div class="error-msg">No element symbol provided.</div>`;
+          return;
+        }
+
+        // Parallel fetches: element + lesson + vocab + earth examples + quiz
+        const [elementRes, lessonRes, vocabRes, examplesRes, quizRes] = await Promise.allSettled([
+          fetch(`${API}/api/elements/symbol/${symbol}`),
+          fetch(`${API}/api/lessons/${symbol}`),
+          fetch(`${API}/api/lessons/${symbol}/vocabulary`),
+          fetch(`${API}/api/lessons/${symbol}/earth-examples`),
+          fetch(`${API}/api/lessons/${symbol}/quiz`),
+        ]);
+
+        // Element is required
+        if (elementRes.status === 'rejected' || !elementRes.value.ok) {
+          document.getElementById('content').innerHTML = `<div class="error-msg">Could not load element "${escHtml(symbol)}".<br>Make sure the backend is running on port 3000 and the database is seeded.</div>`;
+          return;
+        }
+
+        const el      = (await elementRes.value.json()).data;
+        const lesson  = lessonRes.status === 'fulfilled' && lessonRes.value.ok   ? (await lessonRes.value.json()).data   : null;
+        const vocab   = vocabRes.status === 'fulfilled'  && vocabRes.value.ok    ? (await vocabRes.value.json()).data    : [];
+        const examples= examplesRes.status === 'fulfilled' && examplesRes.value.ok ? (await examplesRes.value.json()).data : null;
+        const quizData= quizRes.status === 'fulfilled'   && quizRes.value.ok     ? (await quizRes.value.json()).data     : null;
+
+        currentLesson = lesson;
+        document.title = `${el.name} – Subatomic Language`;
+
+        // Fetch user progress if logged in
+        userProgress = await fetchProgress(symbol);
+
+        // Build Bohr diagram from bohrShells if available, else use element's period
+        const shells = el.bohrShells && el.bohrShells.length ? el.bohrShells : defaultShells(el.atomicNumber);
+        const bohrHtml = buildBohrDiagram(shells, el.period || 1);
+
+        // Meta chips
+        const chips = [
+          el.category       && `<span class="meta-chip">${escHtml(el.category)}</span>`,
+          el.period         && `<span class="meta-chip">Period ${el.period}</span>`,
+          el.group          && `<span class="meta-chip">Group ${el.group}</span>`,
+          el.block          && `<span class="meta-chip">Block ${el.block.toUpperCase()}</span>`,
+          el.standardState  && `<span class="meta-chip">${escHtml(el.standardState)}</span>`,
+        ].filter(Boolean).join('');
+
+        // Overview detail cards
+        const details = [
+          { label: 'Atomic Mass',      value: el.atomicMass    ? el.atomicMass + ' u'  : '—' },
+          { label: 'Protons',          value: el.protons       ?? '—' },
+          { label: 'Neutrons',         value: el.neutrons      ?? '—' },
+          { label: 'Electrons',        value: el.electrons     ?? '—' },
+          { label: 'Electronegativity',value: el.electronegativity ?? '—' },
+          { label: 'Melting Point',    value: el.meltingPoint  ? el.meltingPoint + ' K' : '—' },
+          { label: 'Boiling Point',    value: el.boilingPoint  ? el.boilingPoint + ' K' : '—' },
+          { label: 'Density',          value: el.density       ? el.density + ' g/cm³'  : '—' },
+          { label: 'Discovered By',    value: el.discoveryData?.discoveredBy ?? '—' },
+          { label: 'Year',             value: el.discoveryData?.year          ?? '—' },
+        ];
+        const detailCards = details.map(d => `
+          <div class="detail-card">
+            <div class="label">${escHtml(d.label)}</div>
+            <div class="value">${escHtml(String(d.value))}</div>
+          </div>`).join('');
+
+        // Vocabulary tab
+        const vocabHtml = (vocab && vocab.length)
+          ? vocab.map(v => `
+              <div class="vocab-card">
+                <div class="vocab-word">${escHtml(v.word)}</div>
+                <div class="vocab-def">${escHtml(v.definition)}</div>
+                ${v.example ? `<div class="vocab-ex">"${escHtml(v.example)}"</div>` : ''}
+              </div>`).join('')
+          : `<p class="no-data">No vocabulary data available yet.</p>`;
+
+        // Earth examples tab
+        const examplesHtml = (examples && examples.earthExamples && examples.earthExamples.length)
+          ? examples.earthExamples.map(ex => `
+              <div class="example-card">
+                <div class="example-name">${escHtml(ex.name)}</div>
+                ${ex.location ? `<div class="example-loc">${escHtml(ex.location)}</div>` : ''}
+                <div class="example-desc">${escHtml(ex.description)}</div>
+              </div>`).join('')
+          : `<p class="no-data">No earth examples available yet.</p>`;
+
+        document.getElementById('content').innerHTML = `
+          <div class="element-hero">
+            ${bohrHtml}
+            <div class="element-info">
+              <div class="element-symbol-big">${escHtml(el.symbol)} &nbsp; #${el.atomicNumber}</div>
+              <h1>${escHtml(el.name)}</h1>
+              <div class="element-meta">${chips}</div>
+              ${el.funFact ? `<div class="fun-fact">${escHtml(el.funFact)}</div>` : ''}
+              ${lesson ? `
+                <div class="lesson-progress-bar" id="progress-bar">
+                  <span style="color:#6b7280;font-size:0.9rem">Loading progress…</span>
+                </div>` : ''}
+            </div>
+          </div>
+
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="overview"><i class="fa-solid fa-circle-info"></i> Overview</button>
+            <button class="tab-btn" data-tab="vocabulary"><i class="fa-solid fa-book"></i> Vocabulary</button>
+            <button class="tab-btn" data-tab="quiz"><i class="fa-solid fa-clipboard-question"></i> Quiz</button>
+            <button class="tab-btn" data-tab="examples"><i class="fa-solid fa-earth-americas"></i> Earth Examples</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-overview">
+            <div class="details-grid">${detailCards}</div>
+            ${lesson ? `
+              <div style="margin-top:8px">
+                <h3 style="margin-bottom:12px">Learning Objectives</h3>
+                <ul style="color:#374151;line-height:1.8">
+                  ${(lesson.learningObjectives || []).map(o => `<li>${escHtml(o)}</li>`).join('') || '<li style="color:#9ca3af">None listed yet.</li>'}
+                </ul>
+              </div>` : ''}
+          </div>
+
+          <div class="tab-panel" id="tab-vocabulary">
+            <div class="vocab-grid">${vocabHtml}</div>
+          </div>
+
+          <div class="tab-panel" id="tab-quiz" id="tab-quiz">
+            <!-- filled by renderQuizTab -->
+          </div>
+
+          <div class="tab-panel" id="tab-examples">
+            ${examples && examples.funFact ? `<div class="fun-fact" style="margin-bottom:24px">${escHtml(examples.funFact)}</div>` : ''}
+            <div class="examples-grid">${examplesHtml}</div>
+          </div>`;
+
+        initTabs();
+        renderProgressBar(lesson);
+        renderQuizTab(quizData);
+      }
+
+      // Fallback Bohr shells for elements 1-18 when DB has no data
+      function defaultShells(n) {
+        const map = {
+          1:[1], 2:[2],
+          3:[2,1], 4:[2,2], 5:[2,3], 6:[2,4], 7:[2,5], 8:[2,6], 9:[2,7], 10:[2,8],
+          11:[2,8,1], 12:[2,8,2], 13:[2,8,3], 14:[2,8,4],
+          15:[2,8,5], 16:[2,8,6], 17:[2,8,7], 18:[2,8,8],
+        };
+        return map[n] || [2];
+      }
+
+      // ── Init ──────────────────────────────────────────────────────
+      renderAuthArea();
+      load().catch(err => {
+        document.getElementById('content').innerHTML = `<div class="error-msg">Failed to load: ${escHtml(err.message)}<br>Is the backend running on port 3000?</div>`;
+      });
+    </script>
+  </body>
+</html>

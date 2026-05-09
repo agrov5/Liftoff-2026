@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liftoff 2026 - Subatomic Language</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: #1f2937;
+        background: #f7f8fb;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        background: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e2e8f0;
+        z-index: 10;
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand {
+        font-weight: 700;
+        font-size: 1.35rem;
+        color: #111827;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      nav a {
+        text-decoration: none;
+        color: #374151;
+        font-weight: 500;
+      }
+      nav a:hover { color: #0f172a; }
+      .btn {
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: background 0.15s;
+      }
+      .btn-primary {
+        background: #2563eb;
+        color: #fff;
+      }
+      .btn-primary:hover { background: #1d4ed8; }
+      .btn-ghost {
+        background: transparent;
+        color: #374151;
+        border: 1px solid #d1d5db;
+      }
+      .btn-ghost:hover { background: #f3f4f6; }
+      .user-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 0.88rem;
+        color: #1e40af;
+        font-weight: 600;
+      }
+      .user-pill .xp-badge {
+        background: #dbeafe;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-size: 0.78rem;
+      }
+      .btn-sm {
+        padding: 5px 12px;
+        font-size: 0.82rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        background: #fee2e2;
+        color: #b91c1c;
+        font-weight: 600;
+      }
+      .btn-sm:hover { background: #fecaca; }
+
+      /* Hero */
+      .hero {
+        padding: 100px 240px 100px;
+        text-align: center;
+        background-image: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2.4rem, 4vw, 4rem);
+        line-height: 1.05;
+      }
+      .hero p {
+        margin: 18px auto 0;
+        max-width: 680px;
+        color: #4b5563;
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      /* Main layout */
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+      }
+      section {
+        padding: 60px 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      section:last-of-type { border-bottom: none; }
+      .section-title {
+        margin-bottom: 24px;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+      }
+      .section-intro {
+        max-width: 760px;
+        color: #4b5563;
+        line-height: 1.8;
+        margin-bottom: 32px;
+      }
+
+      /* Element grid */
+      .grid-5 {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .element-card {
+        background: #ffffff;
+        border: 1px solid #dbeafe;
+        border-radius: 18px;
+        padding: 16px;
+        text-align: center;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        transition: transform 0.2s ease, border-color 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        aspect-ratio: 1;
+      }
+      .element-card:hover {
+        transform: translateY(-4px);
+        border-color: #a5b4fc;
+      }
+      .element-card a {
+        color: inherit;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .diagram {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        margin-bottom: 12px;
+      }
+      .nucleus {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #2563eb, #4338ca);
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.35);
+      }
+      .orbit {
+        position: absolute;
+        border: 1px dashed rgba(15, 23, 42, 0.18);
+        border-radius: 50%;
+      }
+      .orbit--one  { top: 12%; left: 12%; right: 12%; bottom: 12%; }
+      .orbit--two  { top:  6%; left:  6%; right:  6%; bottom:  6%; }
+      .orbit--three{ top:  2%; left:  2%; right:  2%; bottom:  2%; }
+      .orbit-group {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0; left: 0;
+      }
+      .electron {
+        position: absolute;
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: #4338ca;
+        box-shadow: 0 0 3px rgba(67,56,202,0.8);
+        transform: translate(-50%, -50%);
+      }
+      .orbit-group-1 .electron:nth-of-type(1) { left: 88%; top: 50%; }
+      .orbit-group-1 .electron:nth-of-type(2) { left: 12%; top: 50%; }
+      .orbit-group-2 .electron:nth-of-type(1) { left: 94%; top: 50%; }
+      .orbit-group-2 .electron:nth-of-type(2) { left: 81%; top: 19%; }
+      .orbit-group-2 .electron:nth-of-type(3) { left: 50%; top:  6%; }
+      .orbit-group-2 .electron:nth-of-type(4) { left: 19%; top: 19%; }
+      .orbit-group-2 .electron:nth-of-type(5) { left:  6%; top: 50%; }
+      .orbit-group-2 .electron:nth-of-type(6) { left: 19%; top: 81%; }
+      .orbit-group-2 .electron:nth-of-type(7) { left: 50%; top: 94%; }
+      .orbit-group-2 .electron:nth-of-type(8) { left: 81%; top: 81%; }
+      .orbit-group-3 .electron:nth-of-type(1) { left: 98%; top: 50%; }
+      .orbit-group-3 .electron:nth-of-type(2) { left: 84%; top: 16%; }
+      .orbit-group-3 .electron:nth-of-type(3) { left: 50%; top:  2%; }
+      .orbit-group-3 .electron:nth-of-type(4) { left: 16%; top: 16%; }
+      .orbit-group-3 .electron:nth-of-type(5) { left:  2%; top: 50%; }
+      .orbit-group-3 .electron:nth-of-type(6) { left: 16%; top: 84%; }
+      .orbit-group-3 .electron:nth-of-type(7) { left: 50%; top: 98%; }
+      .orbit-group-3 .electron:nth-of-type(8) { left: 84%; top: 84%; }
+      .period-1 .nucleus { background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b); box-shadow: 0 0 20px rgba(239,68,68,0.35); }
+      .period-1 .electron { background: #ef4444; box-shadow: 0 0 3px rgba(239,68,68,0.8); }
+      .period-2 .nucleus { background: radial-gradient(circle at 30% 30%, #3b82f6, #1e40af); box-shadow: 0 0 20px rgba(59,130,246,0.35); }
+      .period-2 .electron { background: #3b82f6; box-shadow: 0 0 3px rgba(59,130,246,0.8); }
+      .period-3 .nucleus { background: radial-gradient(circle at 30% 30%, #10b981, #059669); box-shadow: 0 0 20px rgba(16,185,129,0.35); }
+      .period-3 .electron { background: #10b981; box-shadow: 0 0 3px rgba(16,185,129,0.8); }
+      .element-label { font-size: 0.95rem; font-weight: 600; color: #111827; margin: 0; }
+      .element-atomic { margin-top: 2px; color: #6b7280; font-size: 0.85rem; }
+
+      /* Cards */
+      .cards-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      }
+
+      /* Auth Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.open { display: flex; }
+      .modal {
+        background: #fff;
+        border-radius: 20px;
+        padding: 36px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+        position: relative;
+      }
+      .modal-close {
+        position: absolute;
+        top: 16px; right: 20px;
+        background: none; border: none;
+        font-size: 1.4rem; cursor: pointer;
+        color: #6b7280;
+      }
+      .modal-close:hover { color: #111; }
+      .modal h2 { margin: 0 0 20px; font-size: 1.5rem; }
+      .tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 24px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #6b7280;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: color 0.15s, border-color 0.15s;
+      }
+      .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+      .tab-panel { display: none; }
+      .tab-panel.active { display: block; }
+      .form-group { margin-bottom: 16px; }
+      .form-group label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; color: #374151; }
+      .form-group input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        box-sizing: border-box;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .form-group input:focus { border-color: #2563eb; }
+      .auth-error {
+        color: #b91c1c;
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .auth-success {
+        color: #065f46;
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .btn-full { width: 100%; padding: 11px; font-size: 1rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand"><i class="fa-solid fa-atom"></i> Subatomic Language</div>
+        <div class="nav-right">
+          <nav>
+            <a href="#lessons"><i class="fa-solid fa-flask"></i> Lessons</a>
+            <a href="#how-to-use" style="margin-left:18px"><i class="fa-solid fa-circle-info"></i> How to Use</a>
+            <a href="#resources" style="margin-left:18px"><i class="fa-solid fa-bookmark"></i> Resources</a>
+          </nav>
+          <div id="auth-area">
+            <button class="btn btn-primary" id="open-auth-btn">
+              <i class="fa-solid fa-right-to-bracket"></i> Login / Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="auth-modal">
+      <div class="modal">
+        <button class="modal-close" id="close-auth-btn">&times;</button>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="login">Login</button>
+          <button class="tab-btn" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login -->
+        <div class="tab-panel active" id="tab-login">
+          <div class="auth-error" id="login-error"></div>
+          <div class="auth-success" id="login-success"></div>
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="you@example.com"
+            />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Password" />
+          </div>
+          <button class="btn btn-primary btn-full" id="login-submit">
+            Login
+          </button>
+        </div>
+
+        <!-- Register -->
+        <div class="tab-panel" id="tab-register">
+          <div class="auth-error" id="register-error"></div>
+          <div class="auth-success" id="register-success"></div>
+          <div class="form-group">
+            <label for="reg-username">Username</label>
+            <input type="text" id="reg-username" placeholder="CoolAlien42" />
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input
+              type="password"
+              id="reg-password"
+              placeholder="Min 8 characters"
+            />
+          </div>
+          <button class="btn btn-primary btn-full" id="register-submit">
+            Create Account
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <h1><i class="fa-solid fa-atom" style="font-size:0.85em;color:#4f46e5"></i> Subatomic Language</h1>
+      <p><i class="fa-solid fa-rocket" style="color:#6366f1"></i> Learning is our element</p>
+    </section>
+
+    <main>
+      <section id="how-to-use">
+        <div class="section-title"><i class="fa-solid fa-circle-question"></i> How to Use</div>
+        <img
+          src="https://kommodo.ai/i/6yX2j0wbK9RZjehLQM6b"
+          aria-label="Diagram"
+        />
+        <div class="cards-list">
+          <div class="card">
+            <h3><i class="fa-solid fa-user-plus" style="color:#2563eb"></i> 1. Create an account</h3>
+            <p>
+              Register to track your XP, streaks, and lesson progress across all
+              elements.
+            </p>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-table-cells" style="color:#2563eb"></i> 2. Explore the interactive table</h3>
+            <p>
+              Each tile in the Lessons section shows a mini Rutherford-Bohr
+              diagram. Click one to open a pronunciation lesson for that
+              element.
+            </p>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-graduation-cap" style="color:#2563eb"></i> 3. Learn and practice</h3>
+            <p>
+              Visit any element page to review vocabulary, take a quiz, and earn
+              XP as you build your streak.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="lessons">
+        <div class="section-title"><i class="fa-solid fa-flask"></i> Lessons</div>
+        <p class="section-intro">
+          Start with the first 18 elements in an interactive periodic table.
+          Each tile shows a simplified Rutherford-Bohr diagram. Click any tile
+          to go to a lesson for that element.
+        </p>
+        <div class="grid-5">
+          <div class="element-card period-1">
+            <a href="elements/element.html?symbol=H">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Hydrogen</div>
+              <div class="element-atomic">1</div>
+            </a>
+          </div>
+          <div class="element-card period-1">
+            <a href="elements/element.html?symbol=He">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Helium</div>
+              <div class="element-atomic">2</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=Li">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Lithium</div>
+              <div class="element-atomic">3</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=Be">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Beryllium</div>
+              <div class="element-atomic">4</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=B">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Boron</div>
+              <div class="element-atomic">5</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=C">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Carbon</div>
+              <div class="element-atomic">6</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=N">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Nitrogen</div>
+              <div class="element-atomic">7</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=O">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Oxygen</div>
+              <div class="element-atomic">8</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=F">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Fluorine</div>
+              <div class="element-atomic">9</div>
+            </a>
+          </div>
+          <div class="element-card period-2">
+            <a href="elements/element.html?symbol=Ne">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Neon</div>
+              <div class="element-atomic">10</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=Na">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Sodium</div>
+              <div class="element-atomic">11</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=Mg">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Magnesium</div>
+              <div class="element-atomic">12</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=Al">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Aluminum</div>
+              <div class="element-atomic">13</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=Si">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Silicon</div>
+              <div class="element-atomic">14</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=P">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Phosphorus</div>
+              <div class="element-atomic">15</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=S">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Sulfur</div>
+              <div class="element-atomic">16</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=Cl">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Chlorine</div>
+              <div class="element-atomic">17</div>
+            </a>
+          </div>
+          <div class="element-card period-3">
+            <a href="elements/element.html?symbol=Ar">
+              <div class="diagram">
+                <div class="orbit orbit--one"></div>
+                <div class="orbit orbit--two"></div>
+                <div class="orbit orbit--three"></div>
+                <div class="nucleus"></div>
+                <div class="orbit-group orbit-group-1">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-2">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+                <div class="orbit-group orbit-group-3">
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                  <div class="electron"></div>
+                </div>
+              </div>
+              <div class="element-label">Argon</div>
+              <div class="element-atomic">18</div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources">
+        <div class="section-title"><i class="fa-solid fa-book-open"></i> Resources</div>
+        <p class="section-intro">
+          Need a reference or extra practice? Periodiq provides quick links to
+          study guides, pronunciation lists, and external chemistry references.
+        </p>
+        <div class="cards-list">
+          <div class="card">
+            <h3><i class="fa-solid fa-list" style="color:#2563eb"></i> Element Quick Guide</h3>
+            <p>
+              A streamlined reference for atomic numbers, electrons, and element
+              names for the first 18 elements.
+            </p>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-volume-high" style="color:#2563eb"></i> Pronunciation Library</h3>
+            <p>
+              One place to review the exact pronunciation of each element. Ideal
+              for test prep and classroom review.
+            </p>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-microscope" style="color:#2563eb"></i> Chemistry Primer</h3>
+            <p>
+              Short articles on atomic structure, electron shells, and how the
+              Rutherford-Bohr model illustrates basic chemistry concepts.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const API = "http://localhost:3000";
+
+      // ── Auth state ──────────────────────────────────────────────
+      function getToken() {
+        return localStorage.getItem("sl_token");
+      }
+      function getUser() {
+        try {
+          return JSON.parse(localStorage.getItem("sl_user") || "null");
+        } catch {
+          return null;
+        }
+      }
+
+      function setAuth(token, user) {
+        localStorage.setItem("sl_token", token);
+        localStorage.setItem("sl_user", JSON.stringify(user));
+        renderAuthArea();
+      }
+
+      function clearAuth() {
+        localStorage.removeItem("sl_token");
+        localStorage.removeItem("sl_user");
+        renderAuthArea();
+      }
+
+      function renderAuthArea() {
+        const area = document.getElementById("auth-area");
+        const user = getUser();
+        if (user) {
+          area.innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="user-pill">
+                ${escHtml(user.username)}
+                <span class="xp-badge">${user.xp} XP</span>
+              </div>
+              <button class="btn-sm" id="logout-btn">Logout</button>
+            </div>`;
+          document
+            .getElementById("logout-btn")
+            .addEventListener("click", clearAuth);
+        } else {
+          area.innerHTML = `<button class="btn btn-primary" id="open-auth-btn"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</button>`;
+          document
+            .getElementById("open-auth-btn")
+            .addEventListener("click", openModal);
+        }
+      }
+
+      function escHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // ── Modal ────────────────────────────────────────────────────
+      const modal = document.getElementById("auth-modal");
+
+      function openModal() {
+        modal.classList.add("open");
+      }
+      function closeModal() {
+        modal.classList.remove("open");
+      }
+
+      document
+        .getElementById("close-auth-btn")
+        .addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tab = btn.dataset.tab;
+          document
+            .querySelectorAll(".tab-btn")
+            .forEach((b) => b.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-panel")
+            .forEach((p) => p.classList.remove("active"));
+          btn.classList.add("active");
+          document.getElementById("tab-" + tab).classList.add("active");
+        });
+      });
+
+      // ── Login ────────────────────────────────────────────────────
+      document
+        .getElementById("login-submit")
+        .addEventListener("click", async () => {
+          const email = document.getElementById("login-email").value.trim();
+          const password = document.getElementById("login-password").value;
+          const errEl = document.getElementById("login-error");
+          const okEl = document.getElementById("login-success");
+          errEl.style.display = "none";
+          okEl.style.display = "none";
+
+          if (!email || !password) {
+            errEl.textContent = "Please fill in all fields.";
+            errEl.style.display = "block";
+            return;
+          }
+          try {
+            const res = await fetch(`${API}/api/auth/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Login failed");
+            setAuth(data.token, data.user);
+            okEl.textContent = `Welcome back, ${data.user.username}!`;
+            okEl.style.display = "block";
+            setTimeout(closeModal, 900);
+          } catch (e) {
+            errEl.textContent = e.message;
+            errEl.style.display = "block";
+          }
+        });
+
+      // ── Register ─────────────────────────────────────────────────
+      document
+        .getElementById("register-submit")
+        .addEventListener("click", async () => {
+          const username = document.getElementById("reg-username").value.trim();
+          const email = document.getElementById("reg-email").value.trim();
+          const password = document.getElementById("reg-password").value;
+          const errEl = document.getElementById("register-error");
+          const okEl = document.getElementById("register-success");
+          errEl.style.display = "none";
+          okEl.style.display = "none";
+
+          if (!username || !email || !password) {
+            errEl.textContent = "Please fill in all fields.";
+            errEl.style.display = "block";
+            return;
+          }
+          try {
+            const res = await fetch(`${API}/api/auth/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, email, password }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Registration failed");
+            setAuth(data.token, data.user);
+            okEl.textContent = `Account created! Welcome, ${data.user.username}!`;
+            okEl.style.display = "block";
+            setTimeout(closeModal, 900);
+          } catch (e) {
+            errEl.textContent = e.message;
+            errEl.style.display = "block";
+          }
+        });
+
+      // ── Init ─────────────────────────────────────────────────────
+      renderAuthArea();
+    </script>
+  </body>
+</html>
