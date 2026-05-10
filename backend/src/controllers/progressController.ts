@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middlewares/auth';
-import Progress from '../models/Progress';
+import Progress, { IProgress } from '../models/Progress';
 import Lesson from '../models/Lesson';
 import User from '../models/User';
 
@@ -11,13 +11,15 @@ export async function getUserProgress(req: AuthRequest, res: Response): Promise<
       .populate('lessonId', 'title elementSymbol lessonOrder xpReward')
       .sort({ updatedAt: -1 });
 
-    const completed = progress.filter((p) => p.status === 'completed').length;
-    const totalXp = progress.reduce((sum, p) => sum + p.xpEarned, 0);
+    const completed = progress.filter((p: IProgress) => p.status === 'completed').length;
+    const totalXp = progress.reduce((sum: number, p: IProgress) => sum + p.xpEarned, 0);
+    const totalLessons = await Lesson.countDocuments();
+    const percentComplete = totalLessons > 0 ? Math.round((completed / totalLessons) * 100) : 0;
 
     res.json({
       data: {
         lessons: progress,
-        summary: { completed, totalXp, totalLessons: progress.length },
+        summary: { completed, totalXp, totalLessons, percentComplete },
       },
     });
   } catch (err) {

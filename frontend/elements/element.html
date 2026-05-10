@@ -3,23 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Element Lesson – Subatomic Language</title>
+    <title>Element Lesson</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
+      .brand-logo { height: 1.15em; vertical-align: middle; }
       *, *::before, *::after { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        color: #1f2937;
-        background: #f7f8fb;
+        color: #ffffff; /* Starlight White */
+        background: #081448; /* Deep Blue */
       }
 
       /* ── Header ── */
       header {
         position: sticky; top: 0;
-        background: #ffffffcc;
+        background: #282157; /* Midnight Violet */
         backdrop-filter: blur(10px);
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #9dd6ff; /* Soft Nebula */
         z-index: 10;
       }
       .nav-inner {
@@ -32,39 +33,45 @@
       }
       .back-link {
         text-decoration: none;
-        color: #2563eb;
+        color:#9dd6ff; /* Soft Nebula */
         font-weight: 600;
         font-size: 0.95rem;
         display: flex;
         align-items: center;
         gap: 6px;
       }
-      .back-link:hover { color: #1d4ed8; }
-      .brand { font-weight: 700; font-size: 1.2rem; color: #111827; }
+      .back-link:hover { color: #ffffff; /* Starlight White */ }
+      .brand { font-weight: 700; font-size: 1.2rem; color: #9dd6ff; /* Soft Nebula */ }
       .user-pill {
         display: flex; align-items: center; gap: 8px;
-        background: #eff6ff; border: 1px solid #bfdbfe;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #ffffff; /* Starlight White */
         border-radius: 999px; padding: 5px 12px;
-        font-size: 0.85rem; color: #1e40af; font-weight: 600;
+        font-size: 0.85rem; color: #9dd6ff; /* Soft Nebula */
+        font-weight: 600;
       }
       .xp-badge {
-        background: #dbeafe; border-radius: 999px;
+        background: #282157; /* Midnight Violet */
+        border-radius: 999px;
         padding: 2px 8px; font-size: 0.76rem;
+        color: #ffffff; /* Starlight White */
       }
       .streak-badge {
-        background: #fef3c7; border-radius: 999px;
-        padding: 2px 8px; font-size: 0.76rem; color: #92400e;
+        background: #9dd6ff; /* Soft Nebula */
+        border-radius: 999px;
+        padding: 2px 8px; font-size: 0.76rem;
+        color: #081448; /* Deep Blue */
       }
       .btn { padding: 8px 18px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; }
-      .btn-primary { background: #2563eb; color: #fff; }
-      .btn-primary:hover { background: #1d4ed8; }
-      .btn-sm-logout { background: #fee2e2; color: #b91c1c; padding: 5px 11px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
-      .btn-sm-logout:hover { background: #fecaca; }
+      .btn-primary { background: #282157; /* Midnight Violet */ color: #ffffff; /* Starlight White */ }
+      .btn-primary:hover { background: #9dd6ff; /* Soft Nebula */ color: #081448; }
+      .btn-sm-logout { background: #9dd6ff; /* Soft Nebula */ color: #081448; padding: 5px 11px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
+      .btn-sm-logout:hover { background: #ffffff; /* Starlight White */ color: #081448; }
 
       /* ── Page layout ── */
       .page { max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; }
-      .loading { text-align: center; padding: 80px 0; color: #6b7280; font-size: 1.1rem; }
-      .error-msg { text-align: center; padding: 60px 0; color: #b91c1c; }
+      .loading { text-align: center; padding: 80px 0; color: #4B4B4B; font-size: 1.1rem; } /* Meteor Grey */
+      .error-msg { text-align: center; padding: 60px 0; color: #FF00FF; } /* Plasma Magenta */
 
       /* ── Hero ── */
       .element-hero {
@@ -73,7 +80,15 @@
         gap: 36px;
         align-items: center;
         padding: 48px 0 36px;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid #B87333; /* Quasar Copper */
+      }
+      .bohr-card {
+        display: inline-flex;
+        padding: 18px;
+        background: #9dd6ff; /* Soft Nebula */
+        border-radius: 22px;
+        box-shadow: 0 18px 40px rgba(8, 20, 68, 0.18);
+        margin-bottom: 10px;
       }
       .bohr-canvas {
         position: relative;
@@ -104,13 +119,13 @@
         z-index: 3;
       }
 
-      .element-info h1 { margin: 0 0 6px; font-size: 2.6rem; }
+      .element-info h1 { margin: 0 0 6px; font-size: 2.6rem; color: #9dd6ff; } /* Soft Nebula */
       .element-symbol-big {
         display: inline-block;
         font-size: 1.3rem;
         font-weight: 700;
-        background: #eff6ff;
-        color: #2563eb;
+        background: #282157; /* Midnight Violet */
+        color: #9dd6ff; /* Soft Nebula */
         border-radius: 8px;
         padding: 4px 14px;
         margin-bottom: 12px;
@@ -119,17 +134,19 @@
         display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
       }
       .meta-chip {
-        background: #f3f4f6; border-radius: 999px;
-        padding: 4px 12px; font-size: 0.82rem; color: #374151;
+        background: #282157; /* Midnight Violet */
+        border-radius: 999px;
+        padding: 4px 12px; font-size: 0.82rem; color: #ffffff; /* Starlight White */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
       }
       .fun-fact {
         margin-top: 14px;
-        background: #fffbeb;
-        border-left: 4px solid #f59e0b;
+        background: #282157; /* Midnight Violet */
+        border-left: 4px solid #9dd6ff; /* Soft Nebula */
         border-radius: 0 8px 8px 0;
         padding: 10px 14px;
         font-size: 0.9rem;
-        color: #78350f;
+        color: #ffffff; /* Starlight White */
         line-height: 1.6;
       }
 
@@ -137,41 +154,41 @@
       .lesson-progress-bar {
         margin: 28px 0 0;
         padding: 16px 20px;
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 16px;
       }
-      .progress-status { font-size: 0.9rem; font-weight: 600; }
-      .status-not_started { color: #6b7280; }
-      .status-in_progress { color: #d97706; }
-      .status-completed   { color: #059669; }
+      .progress-status { font-size: 0.9rem; font-weight: 600; color: #ffffff; }
+      .status-not_started { color: #ffffff; }
+      .status-in_progress { color: #9dd6ff; }
+      .status-completed   { color: #ffffff; }
       .progress-actions { display: flex; gap: 10px; }
-      .btn-start    { background: #2563eb; color: #fff; }
-      .btn-start:hover { background: #1d4ed8; }
-      .btn-complete { background: #059669; color: #fff; }
-      .btn-complete:hover { background: #047857; }
+      .btn-start    { background: #282157; color: #ffffff; }
+      .btn-start:hover { background: #9dd6ff; color: #081448; }
+      .btn-complete { background: #282157; color: #ffffff; }
+      .btn-complete:hover { background: #9dd6ff; color: #081448; }
       .xp-reward-chip {
-        background: #ecfdf5; color: #065f46;
+        background: #9dd6ff; color: #081448;
         border-radius: 999px; padding: 4px 12px;
         font-size: 0.82rem; font-weight: 600;
       }
 
       /* ── Tabs ── */
-      .tabs { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin: 36px 0 28px; }
+      .tabs { display: flex; gap: 0; border-bottom: 2px solid #9dd6ff; margin: 36px 0 28px; }
       .tab-btn {
         padding: 12px 22px;
         background: none; border: none; cursor: pointer;
         font-size: 0.95rem; font-weight: 600;
-        color: #6b7280;
+        color: #ffffff;
         border-bottom: 2px solid transparent;
         margin-bottom: -2px;
         transition: color 0.15s, border-color 0.15s;
       }
-      .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+      .tab-btn.active { color: #9dd6ff; border-bottom-color: #9dd6ff; }
       .tab-panel { display: none; }
       .tab-panel.active { display: block; }
 
@@ -183,13 +200,13 @@
         margin-bottom: 28px;
       }
       .detail-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 12px;
         padding: 16px 18px;
       }
-      .detail-card .label { font-size: 0.78rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-      .detail-card .value { font-size: 1.05rem; font-weight: 600; color: #111827; }
+      .detail-card .label { font-size: 0.78rem; color: #9dd6ff; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+      .detail-card .value { font-size: 1.05rem; font-weight: 600; color: #ffffff; }
 
       /* ── Vocabulary ── */
       .vocab-grid {
@@ -198,52 +215,57 @@
         gap: 16px;
       }
       .vocab-card {
-        background: #fff;
-        border: 1px solid #dbeafe;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 14px;
         padding: 20px;
       }
-      .vocab-word { font-size: 1.15rem; font-weight: 700; color: #1e40af; margin-bottom: 6px; }
-      .vocab-def  { font-size: 0.9rem; color: #374151; line-height: 1.6; margin-bottom: 8px; }
-      .vocab-ex   { font-size: 0.85rem; color: #6b7280; font-style: italic; }
-      .no-data    { color: #9ca3af; font-size: 0.95rem; padding: 20px 0; }
+      .vocab-word { font-size: 1.15rem; font-weight: 700; color: #9dd6ff; margin-bottom: 6px; }
+      .vocab-def  { font-size: 0.9rem; color: #ffffff; line-height: 1.6; margin-bottom: 8px; }
+      .vocab-ex   { font-size: 0.85rem; color: #ffffff; font-style: italic; }
+      .card-image { width: 100%; height: auto; border-radius: 12px; margin-bottom: 14px; object-fit: cover; }
+      .element-image { width: 100%; max-width: 360px; height: auto; border-radius: 18px; margin: 18px 0; }
+      .no-data    { color: #ffffff; font-size: 0.95rem; padding: 20px 0; }
 
       /* ── Quiz ── */
       .auth-required {
-        background: #fffbeb; border: 1px solid #fde68a;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 12px; padding: 18px 22px;
-        color: #92400e; font-size: 0.92rem; margin-bottom: 24px;
+        color: #ffffff;
+        font-size: 0.92rem; margin-bottom: 24px;
       }
       .quiz-question {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 14px;
         padding: 22px;
         margin-bottom: 18px;
       }
-      .question-text { font-weight: 600; font-size: 1rem; margin-bottom: 14px; }
-      .question-num  { font-size: 0.8rem; color: #9ca3af; margin-bottom: 6px; }
+      .question-text { font-weight: 600; font-size: 1rem; margin-bottom: 14px; color: #9dd6ff; }
+      .question-num  { font-size: 0.8rem; color: #ffffff; margin-bottom: 6px; }
       .options-list  { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
       .option-label  {
         display: flex; align-items: center; gap: 10px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 8px;
         cursor: pointer;
         transition: border-color 0.15s, background 0.15s;
         font-size: 0.92rem;
       }
-      .option-label:hover { border-color: #93c5fd; background: #eff6ff; }
-      .option-label input[type="radio"] { accent-color: #2563eb; }
+      .option-label:hover { border-color: #9dd6ff; background: #282157; }
+      .option-label input[type="radio"] { accent-color: #9dd6ff; }
       .fill-blank-input {
         width: 100%;
         padding: 10px 12px;
-        border: 1px solid #d1d5db;
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 8px;
         font-size: 0.92rem;
         outline: none;
+        transition: border-color 0.15s;
       }
-      .fill-blank-input:focus { border-color: #2563eb; }
+      .fill-blank-input:focus { border-color: #ffffff; }
       .quiz-submit-row { margin-top: 24px; display: flex; align-items: center; gap: 14px; }
       .quiz-result-banner {
         padding: 16px 20px;
@@ -252,8 +274,8 @@
         margin-top: 24px;
         display: none;
       }
-      .quiz-result-banner.pass { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
-      .quiz-result-banner.fail { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+      .quiz-result-banner.pass { background: #282157; color: #ffffff; border: 1px solid #9dd6ff; }
+      .quiz-result-banner.fail { background: #9dd6ff; color: #081448; border: 1px solid #9dd6ff; }
       .answer-feedback {
         margin-top: 10px;
         padding: 10px 14px;
@@ -261,8 +283,8 @@
         font-size: 0.88rem;
         line-height: 1.5;
       }
-      .answer-feedback.correct { background: #d1fae5; color: #065f46; }
-      .answer-feedback.wrong   { background: #fee2e2; color: #991b1b; }
+      .answer-feedback.correct { background: #9dd6ff; color: #081448; }
+      .answer-feedback.wrong   { background: #ffffff; color: #081448; }
 
       /* ── Earth Examples ── */
       .examples-grid {
@@ -271,14 +293,14 @@
         gap: 16px;
       }
       .example-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: #282157; /* Midnight Violet */
+        border: 1px solid #9dd6ff; /* Soft Nebula */
         border-radius: 14px;
         padding: 20px;
       }
-      .example-name { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: #111827; }
-      .example-loc  { font-size: 0.8rem; color: #9ca3af; margin-bottom: 8px; }
-      .example-desc { font-size: 0.9rem; color: #374151; line-height: 1.6; }
+      .example-name { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: #9dd6ff; }
+      .example-loc  { font-size: 0.8rem; color: #ffffff; margin-bottom: 8px; }
+      .example-desc { font-size: 0.9rem; color: #ffffff; line-height: 1.6; }
 
       @media (max-width: 640px) {
         .element-hero { grid-template-columns: 1fr; }
@@ -290,7 +312,7 @@
     <header>
       <div class="nav-inner">
         <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> All Elements</a>
-        <div class="brand"><i class="fa-solid fa-atom"></i> Subatomic Language</div>
+        <div class="brand"><i class="fa-solid fa-atom"></i> <img src="https://smart-violet-srqcqgegzt.edgeone.app" alt="Subatomic Learning" class="brand-logo" /></div>
         <div id="auth-area"></div>
       </div>
     </header>
@@ -365,7 +387,7 @@
         const maxShells = shells.length;
         const gap = (center - 20) / (maxShells + 0.5);
 
-        let html = `<div class="bohr-canvas">`;
+        let html = `<div class="bohr-card"><div class="bohr-canvas">`;
 
         // Orbits
         for (let i = 0; i < maxShells; i++) {
@@ -382,14 +404,14 @@
           const count = shells[si];
           const r = gap * (si + 1);
           for (let ei = 0; ei < count; ei++) {
-            const angle = (2 * Math.PI * ei) / count - Math.PI / 2;
+            const angle = (2 * Math.PI * ei) / count;
             const x = center + r * Math.cos(angle);
             const y = center + r * Math.sin(angle);
             html += `<div class="bohr-electron" style="left:${x}px;top:${y}px;background:${c.electron};box-shadow:0 0 4px ${c.glow}"></div>`;
           }
         }
 
-        html += `</div>`;
+        html += `</div></div>`;
         return html;
       }
 
@@ -497,10 +519,12 @@
           } else {
             inputHtml = `<input class="fill-blank-input" type="text" id="freetext_${q._id}" placeholder="Your answer…" />`;
           }
+          const imageHtml = q.imageUrl ? `<img class="card-image" src="${escHtml(q.imageUrl)}" alt="Question ${idx + 1} image" />` : '';
           return `
             <div class="quiz-question" id="qq_${q._id}">
               <div class="question-num">Question ${idx + 1} &middot; ${q.points} pt${q.points !== 1 ? 's' : ''}</div>
               <div class="question-text">${escHtml(q.question)}</div>
+              ${imageHtml}
               ${inputHtml}
               <div class="answer-feedback" id="fb_${q._id}" style="display:none"></div>
             </div>`;
@@ -610,7 +634,7 @@
         const quizData= quizRes.status === 'fulfilled'   && quizRes.value.ok     ? (await quizRes.value.json()).data     : null;
 
         currentLesson = lesson;
-        document.title = `${el.name} – Subatomic Language`;
+        document.title = `${el.name} – Element Lesson`;
 
         // Fetch user progress if logged in
         userProgress = await fetchProgress(symbol);
@@ -651,9 +675,10 @@
         const vocabHtml = (vocab && vocab.length)
           ? vocab.map(v => `
               <div class="vocab-card">
+                ${v.imageUrl ? `<img class="card-image" src="${escHtml(v.imageUrl)}" alt="${escHtml(v.word)}" />` : ''}
                 <div class="vocab-word">${escHtml(v.word)}</div>
                 <div class="vocab-def">${escHtml(v.definition)}</div>
-                ${v.example ? `<div class="vocab-ex">"${escHtml(v.example)}"</div>` : ''}
+                ${v.exampleSentence ? `<div class="vocab-ex">"${escHtml(v.exampleSentence)}"</div>` : ''}
               </div>`).join('')
           : `<p class="no-data">No vocabulary data available yet.</p>`;
 
@@ -662,7 +687,7 @@
           ? examples.earthExamples.map(ex => `
               <div class="example-card">
                 <div class="example-name">${escHtml(ex.name)}</div>
-                ${ex.location ? `<div class="example-loc">${escHtml(ex.location)}</div>` : ''}
+                ${ex.imageUrl ? `<img class="card-image" src="${escHtml(ex.imageUrl)}" alt="${escHtml(ex.name)}" />` : ''}
                 <div class="example-desc">${escHtml(ex.description)}</div>
               </div>`).join('')
           : `<p class="no-data">No earth examples available yet.</p>`;
@@ -673,6 +698,7 @@
             <div class="element-info">
               <div class="element-symbol-big">${escHtml(el.symbol)} &nbsp; #${el.atomicNumber}</div>
               <h1>${escHtml(el.name)}</h1>
+              ${el.elementImageUrl ? `<img class="element-image" src="${escHtml(el.elementImageUrl)}" alt="${escHtml(el.name)} image" />` : ''}
               <div class="element-meta">${chips}</div>
               ${el.funFact ? `<div class="fun-fact">${escHtml(el.funFact)}</div>` : ''}
               ${lesson ? `
